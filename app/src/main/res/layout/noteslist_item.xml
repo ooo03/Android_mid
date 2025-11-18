@@ -13,13 +13,56 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/text1"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:gravity="center_vertical"
-    android:paddingLeft="5dip"
-    android:singleLine="true"
-/>
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFFFFF"
+    android:elevation="1dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:shadowColor="#000000"
+    android:shadowDx="0"
+    android:shadowDy="1"
+    android:shadowRadius="1"
+    android:shadowOpacity="0.1"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+>
+    <TextView
+        android:id="@android:id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:singleLine="true"
+        android:textColor="#333333"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="18sp"
+        android:padding="2dp"
+    />
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#666666"
+        android:singleLine="true"
+        android:fontFamily="sans-serif"
+        android:textSize="14sp"
+        android:padding="2dp"
+    />
+    <TextView
+        android:id="@+id/text_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#4CAF50"
+        android:singleLine="true"
+        android:textStyle="italic"
+        android:fontFamily="sans-serif"
+        android:textSize="14sp"
+        android:padding="2dp"
+    />
+</LinearLayout>

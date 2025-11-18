@@ -38,6 +38,11 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.LinearLayout;
+import android.widget.EditText;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.text.InputType;
 
 
 /**
@@ -61,10 +66,18 @@ public class NotesList extends ListActivity {
     private static final String[] PROJECTION = new String[] {
             NotePad.Notes._ID, // 0
             NotePad.Notes.COLUMN_NAME_TITLE, // 1
+            NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, // 2
+            NotePad.Notes.COLUMN_NAME_CATEGORY, // 3
     };
 
     /** The index of the title column */
     private static final int COLUMN_INDEX_TITLE = 1;
+    
+    /** The index of the modification date column */
+    private static final int COLUMN_INDEX_MODIFICATION_DATE = 2;
+    
+    /** The index of the category column */
+    private static final int COLUMN_INDEX_CATEGORY = 3;
 
     /**
      * onCreate is called when Android starts this Activity from scratch.
@@ -118,11 +131,11 @@ public class NotesList extends ListActivity {
          */
 
         // The names of the cursor columns to display in the view, initialized to the title column
-        String[] dataColumns = { NotePad.Notes.COLUMN_NAME_TITLE } ;
+        String[] dataColumns = { NotePad.Notes.COLUMN_NAME_TITLE, NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, NotePad.Notes.COLUMN_NAME_CATEGORY } ;
 
         // The view IDs that will display the cursor columns, initialized to the TextView in
         // noteslist_item.xml
-        int[] viewIDs = { android.R.id.text1 };
+        int[] viewIDs = { android.R.id.text1, R.id.text2, R.id.text_category };
 
         // Creates the backing adapter for the ListView.
         SimpleCursorAdapter adapter
@@ -133,6 +146,31 @@ public class NotesList extends ListActivity {
                       dataColumns,
                       viewIDs
               );
+        
+        // Set a custom ViewBinder to format the date and display category
+        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                if (columnIndex == COLUMN_INDEX_MODIFICATION_DATE) {
+                    // Get the timestamp from the cursor
+                    long timestamp = cursor.getLong(columnIndex);
+                    // Format the timestamp as a human-readable date
+                    java.text.DateFormat dateFormat = java.text.DateFormat.getDateTimeInstance(
+                            java.text.DateFormat.SHORT, java.text.DateFormat.SHORT);
+                    String formattedDate = dateFormat.format(new java.util.Date(timestamp));
+                    // Set the formatted date to the TextView
+                    ((TextView) view).setText(formattedDate);
+                    return true;
+                } else if (columnIndex == COLUMN_INDEX_CATEGORY) {
+                    // Get the category from the cursor
+                    String category = cursor.getString(columnIndex);
+                    // Set the category to the TextView, prefixed with "Category: "
+                    ((TextView) view).setText("Category: " + category);
+                    return true;
+                }
+                return false;
+            }
+        });
 
         // Sets the ListView's adapter to be the cursor adapter that was just created.
         setListAdapter(adapter);
@@ -245,6 +283,9 @@ public class NotesList extends ListActivity {
                 menu.removeGroup(Menu.CATEGORY_ALTERNATIVE);
             }
 
+        // Controls visibility of reset search menu item
+        menu.findItem(R.id.menu_reset_search).setVisible(true);
+        
         // Displays the menu
         return true;
     }
@@ -279,8 +320,71 @@ public class NotesList extends ListActivity {
              */
             startActivity(new Intent(Intent.ACTION_PASTE, getIntent().getData()));
             return true;
+        } else if (item.getItemId() == R.id.menu_search) {
+            // Show search dialog when search menu item is clicked
+            showSearchDialog();
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Shows a dialog for searching notes by title or content
+     */
+    private void showSearchDialog() {
+        // Create a LinearLayout to hold the EditText
+        LinearLayout layout = new LinearLayout(this);
+        layout.setPadding(50, 30, 50, 30);
+        
+        // Create an EditText for entering search query
+        final EditText searchEditText = new EditText(this);
+        searchEditText.setHint(R.string.search_hint);
+        layout.addView(searchEditText);
+        
+        // Create the search dialog
+        new AlertDialog.Builder(this)
+            .setTitle(R.string.search_title)
+            .setView(layout)
+            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String query = searchEditText.getText().toString().trim();
+                    if (!query.isEmpty()) {
+                        // Perform search with the entered query
+                        performSearch(query);
+                    }
+                }
+            })
+            .setNegativeButton(android.R.string.cancel, null)
+            .show();
+    }
+
+    /**
+     * Performs search query on notes database
+     * @param query The search term to look for in title or content
+     */
+    private void performSearch(String query) {
+        // Build the selection clause for searching in title or content
+        String selection = NotePad.Notes.COLUMN_NAME_TITLE + " LIKE ? OR " + 
+                          NotePad.Notes.COLUMN_NAME_NOTE + " LIKE ?";
+        
+        // Build the selection arguments
+        String[] selectionArgs = new String[] {
+            "%" + query + "%",
+            "%" + query + "%"
+        };
+        
+        // Perform the query
+        Cursor cursor = managedQuery(
+            getIntent().getData(),            // Use the default content URI for the provider
+            PROJECTION,                       // Return the note ID, title and modification date
+            selection,                        // Where clause
+            selectionArgs,                    // Where clause arguments
+            NotePad.Notes.DEFAULT_SORT_ORDER  // Use the default sort order
+        );
+        
+        // Update the ListView with the search results
+        ((SimpleCursorAdapter) getListAdapter()).changeCursor(cursor);
     }
 
     /**

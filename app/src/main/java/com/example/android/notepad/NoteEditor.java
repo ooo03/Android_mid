@@ -19,12 +19,14 @@ package com.example.android.notepad;
 import static com.example.android.notepad.R.*;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -62,7 +64,8 @@ public class NoteEditor extends Activity {
         new String[] {
             NotePad.Notes._ID,
             NotePad.Notes.COLUMN_NAME_TITLE,
-            NotePad.Notes.COLUMN_NAME_NOTE
+            NotePad.Notes.COLUMN_NAME_NOTE,
+            NotePad.Notes.COLUMN_NAME_CATEGORY
     };
 
     // A label for the saved state of the activity
@@ -444,8 +447,72 @@ public class NoteEditor extends Activity {
             finish();
         } else if (id == R.id.menu_revert) {
             cancelNote();
+        } else if (id == R.id.menu_change_category) {
+            showCategoryDialog();
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    /**
+     * Shows a dialog to select a category for the note.
+     */
+    private void showCategoryDialog() {
+        // Define the categories
+        final String[] categories = {
+            getString(R.string.category_uncategorized),
+            getString(R.string.category_personal),
+            getString(R.string.category_work),
+            getString(R.string.category_study),
+            getString(R.string.category_other)
+        };
+        
+        // Get current category
+        String currentCategory = "Uncategorized";
+        int currentIndex = 0;
+        if (mCursor != null) {
+            int categoryIndex = mCursor.getColumnIndex(NotePad.Notes.COLUMN_NAME_CATEGORY);
+            currentCategory = mCursor.getString(categoryIndex);
+            
+            // Find the index of current category
+            for (int i = 0; i < categories.length; i++) {
+                if (categories[i].equals(currentCategory)) {
+                    currentIndex = i;
+                    break;
+                }
+            }
+        }
+        
+        // Create and show the dialog
+        new AlertDialog.Builder(this)
+            .setTitle(R.string.dialog_category_title)
+            .setSingleChoiceItems(categories, currentIndex, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Update the note's category
+                    updateCategory(categories[which]);
+                    dialog.dismiss();
+                }
+            })
+            .setNegativeButton(android.R.string.cancel, null)
+            .show();
+    }
+    
+    /**
+     * Updates the note's category.
+     * @param category The new category to set.
+     */
+    private void updateCategory(String category) {
+        ContentValues values = new ContentValues();
+        values.put(NotePad.Notes.COLUMN_NAME_CATEGORY, category);
+        values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, System.currentTimeMillis());
+        
+        // Update the note in the database
+        getContentResolver().update(mUri, values, null, null);
+        
+        // Update the cursor with the new category
+        if (mCursor != null) {
+            mCursor.requery();
+        }
     }
 
 //BEGIN_INCLUDE(paste)

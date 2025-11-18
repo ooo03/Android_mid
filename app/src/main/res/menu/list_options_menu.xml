@@ -12,4 +12,15 @@
           android:icon="@drawable/ic_menu_compose"
           android:title="@string/menu_paste"
           android:alphabeticShortcut='p' />
+    <!--  Search menu item to find notes by title or content -->
+    <item android:id="@+id/menu_search"
+          android:icon="@android:drawable/ic_menu_search"
+          android:title="@string/menu_search"
+          android:alphabeticShortcut='s' />
+    <!-- Reset search results menu item -->
+    <item
+        android:id="@+id/menu_reset_search"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:title="Reset Search"
+        android:visible="false" />
 </menu>
