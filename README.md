@@ -88,6 +88,7 @@ NotePad/
 1. 显示所有笔记的标题、修改日期和分类
 2. 支持长按操作（删除、分享等）
 3. 支持搜索功能
+<img width="520" height="942" alt="{47232ACB-07AE-4A31-BE68-2D7BC32E2CC4}" src="https://github.com/user-attachments/assets/6f29a134-0825-419e-a67d-ba2d1c4e6d1f" />
 
 笔记编辑界面
 1. 支持多行文本编辑
