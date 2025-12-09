@@ -98,6 +98,7 @@ NotePad/
 分类选择界面
 1. 提供预设的分类选项
 2. 支持快速选择和更改分类
+<img width="504" height="953" alt="{1D107773-7C85-4A60-8A1B-3D65CA220488}" src="https://github.com/user-attachments/assets/dbb41987-e490-4d58-896e-b7a2bf845e84" />
 
 使用方法
 
