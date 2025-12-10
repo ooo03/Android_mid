@@ -89,7 +89,7 @@ NotePad/
 2. 支持长按操作（删除、分享等）
 3. 支持搜索功能
 <img width="520" height="942" alt="{47232ACB-07AE-4A31-BE68-2D7BC32E2CC4}" src="https://github.com/user-attachments/assets/6f29a134-0825-419e-a67d-ba2d1c4e6d1f" />
-
+<img width="504" height="953" alt="{1D107773-7C85-4A60-8A1B-3D65CA220488}" src="https://github.com/user-attachments/assets/dbb41987-e490-4d58-896e-b7a2bf845e84" />
 笔记编辑界面
 1. 支持多行文本编辑
 2. 自动换行
@@ -98,7 +98,6 @@ NotePad/
 分类选择界面
 1. 提供预设的分类选项
 2. 支持快速选择和更改分类
-<img width="504" height="953" alt="{1D107773-7C85-4A60-8A1B-3D65CA220488}" src="https://github.com/user-attachments/assets/dbb41987-e490-4d58-896e-b7a2bf845e84" />
 
 使用方法
 
