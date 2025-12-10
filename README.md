@@ -89,6 +89,8 @@ NotePad/
 2. 支持长按操作（删除、分享等）
 3. 支持搜索功能
 <img width="520" height="942" alt="{47232ACB-07AE-4A31-BE68-2D7BC32E2CC4}" src="https://github.com/user-attachments/assets/6f29a134-0825-419e-a67d-ba2d1c4e6d1f" />
+<img width="510" height="1040" alt="{C8E0C720-D5FD-4F98-90BD-5001C04E286F}" src="https://github.com/user-attachments/assets/22ce8761-5886-4d26-ac7c-a47f71a1c113" />
+
 <img width="504" height="953" alt="{1D107773-7C85-4A60-8A1B-3D65CA220488}" src="https://github.com/user-attachments/assets/dbb41987-e490-4d58-896e-b7a2bf845e84" />
 
 笔记编辑界面
