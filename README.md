@@ -97,10 +97,12 @@ NotePad/
 1. 支持多行文本编辑
 2. 自动换行
 3. 支持分类选择
+![35e6d110e8d30197f0dfd6234442a707](https://github.com/user-attachments/assets/30ab956b-055b-4752-95f5-57b69b30b6d7)
 
 分类选择界面
 1. 提供预设的分类选项
 2. 支持快速选择和更改分类
+<img width="526" height="1008" alt="{F816B89D-55A5-443F-AB68-84CDBDF13611}" src="https://github.com/user-attachments/assets/9f1d07b1-0a0e-4ce3-922a-7abb0faf64d8" />
 
 使用方法
 
